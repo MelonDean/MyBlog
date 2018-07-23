@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block mainbox %}
+    <div class="row">
+        <table class="table table-striped table-responsive text-center">
+            {% for foo in myarticlelist %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="/article/{{ foo.pk }}">{{ foo.title }}</a></td>
+                    <td>{{ foo.issuetime }}</td>
+                    <td><a href="/article/edit/{{ foo.pk }}/" class="btn btn-primary btn-sm">编辑</a></td>
+                    <td><a href="/article/delete/{{ foo.pk }}/" class="btn btn-danger btn-sm">删除</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

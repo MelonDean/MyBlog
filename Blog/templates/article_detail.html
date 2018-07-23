@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filter %}
+
+{% block mainbox %}
+    <div id="article_info" article_id={{ article_detail.id }}>{{ article_detail.content | safe }}</div>
+    <div class="article-detail-comments">
+    <div class="panel panel-info">
+        <div class="panel-heading">请发表你的评论</div>
+        <div class="panel-body">
+            <div class="media">
+                <div class="media-left">
+                    <a href="/">
+                        <img src="/" alt="">
+                    </a>
+                </div>
+                <div class="media-body">
+{#                      <form class="form-group" method="POST" action="/comment/{{ article_detail.id }}/">#}
+                        <div class="input-group">
+                          <div class="input-group-addon">@{{ article_detail.author }}</div>
+                          <input type="text" class="form-control" id="comment_content" name="comment_content" >
+                        </div>
+                          <br>
+                      <button type="submit" class="btn btn-primary submit_comment" id="test">提交评论</button>
+{#                    </form>#}
+                </div>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <div class="panel panel-info">
+        <div class="panel-heading">评论列表</div>
+        <div class="panel-body">
+            <div class="media-list">
+            {{ article_detail.user }}
+                {% for comment in article_detail.article_comments.all %}
+                <li class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="article-comment-avatar" src="{% static 'images/banner/banner01.jpg' %}" alt="">
+                        </a>
+                    </div>
+                    <div class="media-body article-comment clearfix">
+                        <div class="article-comment-header">
+                            <div class="article-comment-username col-md-3">{{ comment.user.username }}</div>
+                            <div class="article-comment-date col-md-3 col-md-offset-3">{{ comment.cmt_time }}</div>
+                            <div class="col-md-3">回复</div>
+                        </div>
+                        <div class="article-comment-content">{{ comment.content }}</div>
+                    </div>
+                </li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+    {% block customjs %}
+<script>
+$(document).ready(function(){
+    alert(111111111111)
+        $(".submit_comment").on("click",function(){
+            var comment_content = $("#comment_content").val()
+            var comment_to = $("#article_info").attr("article_id")
+            var pid = ""
+            var url = "/comment/" + comment_to + "/"
+            console.log(url)
+            $.ajax({
+                url : url,
+                type:'post',
+                data:{
+                    article_id:comment_to,
+                    content : comment_content,
+                    pid:pid
+                }
+            })
+        })
+    })
+</script>
+    {% endblock %}

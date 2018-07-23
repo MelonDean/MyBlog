@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load custom_filter %}
+
+
+        {% block mainbox %}
+            <div class="main-banner">
+                <ul class="banner-main-ul">
+                    <li class="banner-img-box"><a href="/"><img src="{% static '/images/banner/banner01.jpg' %}" alt="首页轮播图"></a></li>
+                </ul>
+            </div>
+            <div>
+                <div class="article-item">
+                    {% for item in articles %}
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><a href="/article/{{ item.pk }}">{{ item.title }}</a></div>
+                        <div class="panel-body">
+                            <div class="media">
+                              <div class="media-left">
+                                <a href="#">
+                                  <img class="media-object article-media" src="{% static 'images/banner/banner01.jpg' %}" alt="...">
+                                </a>
+                              </div>
+                              <div class="media-body">
+                                <h4 class="media-heading">{{ item.title }}</h4>
+                                ...
+                              </div>
+                            </div>
+                        </div>
+                        <div class="panel-footer clearfix">
+                            <a class="col-md-3"><span class="glyphicon glyphicon-user">&nbsp;{{ item.author }}</span></a>
+                            <a class="col-md-3"><span class="glyphicon glyphicon-time">&nbsp;{{ item.issuetime | date:"Y/m/d" }}</span></a>
+                            <a class="col-md-3"><span class="glyphicon glyphicon-thumbs-up">点击数（{{ item.click_num | default:0 }}）</span></a>
+                            <a class="col-md-3"><span class="glyphicon glyphicon-comment">&nbsp;评论</span></a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="pagination">
+                {% if articles.number == 1 %}
+                <span>上一页</span>
+                    {% else %}
+                    <a href="?page={{ articles.number | minusone }}" disabled>上一页</a>
+                {% endif %}
+                    {% for article in total_page %}
+                        <a href="?page={{ forloop.counter }}" class="{% if articles.number == forloop.counter %}current_page{% endif %}">{{ forloop.counter }}</a>
+                    {% endfor %}
+
+                                {% if articles.number == articles.paginator.num_pages %}
+                <span>下一页</span>
+                    {% else %}
+                                    <a href="?page={{ articles.number | plusone  }}">下一页</a>
+                                {% endif %}
+                </div>
+            </div>
+        {% endblock %}
+
